@@ -2,6 +2,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/models/users.dart';
+import 'package:front/pages/users/user_edit_page.dart';
 import 'package:front/pages/users/users_controller.dart';
 import 'package:get/get.dart';
 
@@ -28,6 +29,16 @@ class UsersLoadedPage extends StatelessWidget{
                     BlocProvider.of<UsersCubit>(context).addDef();
                   },
                 ),
+                const SizedBox(width: 20),
+                Obx(() => ElevatedButton(
+                  child: const Text("Edit"),
+                  onPressed: selectedId.value == null ? null : (){
+                    Get.dialog(Dialog(child: UserEditPage(selectedId.value!)))
+                        .then((_) {
+                          BlocProvider.of<UsersCubit>(context).refresh();
+                        });
+                  },
+                )),
                 const SizedBox(width: 20),
                 Obx(() => ElevatedButton(
                   child: const Text("Delete"),
