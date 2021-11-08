@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class HttpConnectController extends GetxController{
-  static const defaultAddress = "127.0.0.1";
+  static const defaultAddress = "xiiith.ru";
   static const storageKey = "http_address";
   static const stats = "/debug/stat";
 
