@@ -1,6 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
-import 'package:front/models/rooms.dart';
+import 'package:flutter_admin/models/rooms.dart';
 import 'package:get/get.dart';
 
 class RoomsLoadedPage extends StatelessWidget{

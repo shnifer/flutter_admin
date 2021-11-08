@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:front/connectors/http_controller.dart';
-import 'package:front/pages/options/stat_widget.dart';
+import 'package:flutter_admin/connectors/http_controller.dart';
+import 'package:flutter_admin/pages/options/stat_widget.dart';
 import 'package:get/get.dart';
 
 class OptionsPage extends StatelessWidget {

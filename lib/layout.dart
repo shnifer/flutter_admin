@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:front/pages/options/options_page.dart';
-import 'package:front/pages/rooms/rooms_page.dart';
-import 'package:front/pages/users/users_page.dart';
-import 'package:front/side_menu.dart';
+import 'package:flutter_admin/pages/options/options_page.dart';
+import 'package:flutter_admin/pages/rooms/rooms_page.dart';
+import 'package:flutter_admin/pages/users/users_page.dart';
+import 'package:flutter_admin/side_menu.dart';
 import 'package:get/get.dart';
 
 enum MenuPage {options, users, rooms}

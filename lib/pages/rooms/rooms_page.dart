@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:front/pages/rooms/rooms_controller.dart';
-import 'package:front/pages/rooms/rooms_loaded_page.dart';
+import 'package:flutter_admin/pages/rooms/rooms_controller.dart';
+import 'package:flutter_admin/pages/rooms/rooms_loaded_page.dart';
 
 class RoomsPage extends StatelessWidget{
   const RoomsPage({Key? key}) : super(key: key);

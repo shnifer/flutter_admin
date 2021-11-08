@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:front/connectors/http_controller.dart';
-import 'package:front/models/users.dart';
+import 'package:flutter_admin/connectors/http_controller.dart';
+import 'package:flutter_admin/models/users.dart';
 import 'package:get/get.dart';
 
 class UserEditPage extends StatelessWidget {
@@ -168,7 +168,7 @@ class UserEditCubit extends Cubit<UserEditState>{
       });
       if (resp.statusCode != 200) throw Exception("HTTP CODE ${resp.statusCode}");
       return true;
-    } on Exception catch (e){
+    } on Exception{
       return false;
     }
   }

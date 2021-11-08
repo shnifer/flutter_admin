@@ -1,9 +1,9 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:front/models/users.dart';
-import 'package:front/pages/users/user_edit_page.dart';
-import 'package:front/pages/users/users_controller.dart';
+import 'package:flutter_admin/models/users.dart';
+import 'package:flutter_admin/pages/users/user_edit_page.dart';
+import 'package:flutter_admin/pages/users/users_controller.dart';
 import 'package:get/get.dart';
 
 class UsersLoadedPage extends StatelessWidget{

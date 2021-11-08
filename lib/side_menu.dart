@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:front/layout.dart';
+import 'package:flutter_admin/layout.dart';
 
 class SideMenu extends StatelessWidget{
   const SideMenu({Key? key}) : super(key: key);

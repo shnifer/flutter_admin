@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:front/connectors/http_controller.dart';
-import 'package:front/models/rooms.dart';
+import 'package:flutter_admin/connectors/http_controller.dart';
+import 'package:flutter_admin/models/rooms.dart';
 import 'package:get/get.dart';
 
 class RoomsCubit extends Cubit<RoomsState>{

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:front/pages/users/users_controller.dart';
-import 'package:front/pages/users/users_loaded_page.dart';
+import 'package:flutter_admin/pages/users/users_controller.dart';
+import 'package:flutter_admin/pages/users/users_loaded_page.dart';
 
 class UsersPage extends StatelessWidget{
   const UsersPage({Key? key}) : super(key: key);
