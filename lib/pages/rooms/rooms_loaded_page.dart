@@ -1,6 +1,7 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/models/rooms.dart';
+import 'package:flutter_admin/widgets/horizontal_table.dart';
 import 'package:get/get.dart';
 
 class RoomsLoadedPage extends StatelessWidget{
@@ -11,12 +12,14 @@ class RoomsLoadedPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => DataTable2(
-        columns: _columns,
-        rows: rooms.map(
-                (e) => _row(e)
-        ).toList(),
-    ));
+    return ListView(
+      children: [Obx(() => HorizontalTable(
+          columns: _columns,
+          rows: rooms.map(
+                  (e) => _row(e)
+          ).toList(),
+      ))],
+    );
   }
 
   DataRow2 _row(RoomData data) => DataRow2(

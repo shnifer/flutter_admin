@@ -9,7 +9,7 @@ class SideMenu extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: const [
         SideMenuItem(text: "Options", page: MenuPage.options),
@@ -29,10 +29,10 @@ class SideMenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final MenuController c = Get.find();
     return Padding(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.all(5),
       child: ElevatedButton(
         child: SizedBox(
-          height: 60,
+          height: 30,
           child: Center(
             child: Text(text),
           ),

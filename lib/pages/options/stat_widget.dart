@@ -12,7 +12,7 @@ class ServerStatMonitor extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(
-      padding: const EdgeInsets.all(50),
+      padding: const EdgeInsets.all(20),
       width: 500,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -64,6 +64,16 @@ class ServerStatMonitor extends StatelessWidget {
                     c.post("/debug/start");
                   },
                 ),
+                const SizedBox(height: 10),
+                Obx((){
+                  final way = c.stat.paused.value ? "resume" : "pause";
+                  return ElevatedButton(
+                    child: SizedBox(width: 100, child: Center(child: Text(way))),
+                    onPressed: (){
+                      c.post("/debug/$way");
+                    },
+                  );
+                }),
                 const SizedBox(height: 10),
                 ElevatedButton(
                   child: const SizedBox(width: 100, child: Center(child: Text("reset", style: TextStyle(color: Colors.red)))),

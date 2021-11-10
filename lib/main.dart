@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/connectors/http_controller.dart';
+import 'package:flutter_admin/side_menu.dart';
 import 'package:get/get.dart';
 import 'package:flutter_admin/layout.dart';
 
@@ -21,11 +22,23 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Center(child: Text("Админка Немезиды")),
-        ),
-        body: const Layout(),
+      home: LayoutBuilder(
+        builder: (context, constraints) {
+          final bool compact = constraints.maxWidth<600;
+          return Scaffold(
+            appBar: AppBar(
+              title: const Center(child: Text("Админка Немезиды")),
+            ),
+            drawer: compact ? 
+            Container(
+                color: Colors.grey,
+                padding: const EdgeInsets.all(40),
+                margin: const EdgeInsets.all(40),
+                child: const SideMenu(),
+            ) : null,
+            body: Layout(compact: compact),
+          );
+        },
       ),
     );
   }

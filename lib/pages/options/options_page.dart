@@ -11,34 +11,36 @@ class OptionsPage extends StatelessWidget {
     final HttpConnectController c = Get.find();
     final addrController = TextEditingController();
 
-    return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Obx(() => Text("Current address ${c.address}")),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 250,
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Введите новый адрес сервера',
+    return SingleChildScrollView(
+      child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Obx(() => Text("Current address ${c.address}")),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 250,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Введите новый адрес сервера',
+                      ),
+                      controller: addrController,
+                      onEditingComplete: (){
+                        c.setAddress(addrController.text);
+                        addrController.text = "";
+                      },
                     ),
-                    controller: addrController,
-                    onEditingComplete: (){
-                      c.setAddress(addrController.text);
-                      addrController.text = "";
-                    },
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            ServerStatMonitor(),
-          ],
-        );
+                ],
+              ),
+              const SizedBox(height: 10),
+              ServerStatMonitor(),
+            ],
+          ),
+    );
   }
 }

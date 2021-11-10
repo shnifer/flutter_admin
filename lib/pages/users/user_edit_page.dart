@@ -59,35 +59,37 @@ class _UserEditPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       width: 500,
-      child: Column(
-        children:[
-          Text("ID: ${data.id}"),
-          const SizedBox(height: 30),
-          _fieldRaw("Name:", name),
-          const SizedBox(height: 20),
-          _fieldRaw("Cur AP:", curAP, isDigit: true),
-          const SizedBox(height: 20),
-          _fieldRaw("Max AP:", maxAP, isDigit: true),
-          const SizedBox(height: 20),
-          _fieldRaw("Wounds:", wounds, isDigit: true),
-          const SizedBox(height: 20),
-          _fieldRaw("Stim:", stim, isDigit: true),
-          const SizedBox(height: 20),
-          _fieldRaw("Waste:", waste, isDigit: true),
-          const SizedBox(height: 20),
-          _fieldRaw("Prof:", prof),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            child: const Text("Save"),
-            onPressed: () async{
-              final newData = composeData();
-              if (newData!=null){
-                final ok = await BlocProvider.of<UserEditCubit>(context).save(newData);
-                if (ok) Get.back();
-              }
-            },
-          )
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children:[
+            Text("ID: ${data.id}"),
+            const SizedBox(height: 20),
+            _fieldRaw("Name:", name),
+            const SizedBox(height: 5),
+            _fieldRaw("Cur AP:", curAP, isDigit: true),
+            const SizedBox(height: 5),
+            _fieldRaw("Max AP:", maxAP, isDigit: true),
+            const SizedBox(height: 5),
+            _fieldRaw("Wounds:", wounds, isDigit: true),
+            const SizedBox(height: 5),
+            _fieldRaw("Stim:", stim, isDigit: true),
+            const SizedBox(height: 5),
+            _fieldRaw("Waste:", waste, isDigit: true),
+            const SizedBox(height: 5),
+            _fieldRaw("Prof:", prof),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              child: const Text("Save"),
+              onPressed: () async{
+                final newData = composeData();
+                if (newData!=null){
+                  final ok = await BlocProvider.of<UserEditCubit>(context).save(newData);
+                  if (ok) Get.back();
+                }
+              },
+            )
+          ],
+        ),
       ),
     );
   }
@@ -117,17 +119,19 @@ class _UserEditPage extends StatelessWidget {
             width: 75,
             child: Text(prefix),
           ),
-          const SizedBox(width: 30),
-          SizedBox(
-            width: 300,
-            child: TextField(
-              controller: controller,
-              decoration: const InputDecoration(
-                border:  OutlineInputBorder(),
+          Expanded(
+            child: SizedBox(
+              height: 35,
+              child: TextField(
+                controller: controller,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.all(8),
+                  border:  OutlineInputBorder(),
+                ),
+                inputFormatters: [
+                  if (isDigit) FilteringTextInputFormatter.digitsOnly,
+                ],
               ),
-              inputFormatters: [
-                if (isDigit) FilteringTextInputFormatter.digitsOnly,
-              ],
             ),
           ),
         ]

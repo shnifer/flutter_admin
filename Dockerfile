@@ -1,7 +1,9 @@
 FROM cirrusci/flutter as build
-RUN git clone https://github.com/shnifer/flutter_admin.git flutter_admin
+COPY ./lib /flutter_admin/lib
+COPY ./pubspec.yaml /flutter_admin
+COPY ./web /flutter_admin/web
 WORKDIR /flutter_admin
 RUN flutter build web
 
 FROM httpd:2.4
-COPY --from=build /flutter-admin/build/web /usr/local/apache2/htdocs
+COPY --from=build /flutter_admin/build/web /usr/local/apache2/htdocs

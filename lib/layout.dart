@@ -5,39 +5,40 @@ import 'package:flutter_admin/pages/users/users_page.dart';
 import 'package:flutter_admin/side_menu.dart';
 import 'package:get/get.dart';
 
-enum MenuPage {options, users, rooms}
+enum MenuPage { options, users, rooms }
 
-class MenuController extends GetxController{
+class MenuController extends GetxController {
   var curPage = MenuPage.options.obs;
 }
 
-class Layout extends StatelessWidget{
-  const Layout({Key? key}) : super(key: key);
+class Layout extends StatelessWidget {
+  final bool compact;
+  const Layout({Key? key, required this.compact}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final MenuController c = Get.find();
     return Row(
       children: [
-        Expanded(
-          flex: 1,
-          child: Container(
-            color: Colors.black12,
-            child: const SideMenu(),
-          ),
+        if (compact)
+        Container() else
+        Container(
+          width: 150,
+          color: Colors.black12,
+          child: const SideMenu(),
         ),
+
         Expanded(
-          flex:6,
-          child: Obx((){
-              switch (c.curPage.value) {
-                case MenuPage.options:
-                  return const OptionsPage();
-                case MenuPage.users:
-                  return const UsersPage();
-                case MenuPage.rooms:
-                  return const RoomsPage();
-              }
-            }),
+          child: Obx(() {
+            switch (c.curPage.value) {
+              case MenuPage.options:
+                return const OptionsPage();
+              case MenuPage.users:
+                return const UsersPage();
+              case MenuPage.rooms:
+                return const RoomsPage();
+            }
+          }),
         ),
       ],
     );
