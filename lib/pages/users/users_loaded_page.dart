@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_admin/consts/consts.dart';
+import 'package:flutter_admin/connectors/http_controller.dart';
 import 'package:flutter_admin/widgets/horizontal_table.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_admin/models/users.dart';
@@ -11,6 +15,7 @@ import 'package:get/get.dart';
 class UsersLoadedPage extends StatelessWidget {
   final List<UserData> users;
   Rx<int?> selectedId = Rx(null);
+  final HttpConnectController http = Get.find();
 
   UsersLoadedPage(this.users, {Key? key}) : super(key: key);
 
@@ -33,13 +38,10 @@ class UsersLoadedPage extends StatelessWidget {
               Obx(() =>
                   ElevatedButton(
                     child: const Text("Edit"),
-                    onPressed: selectedId.value == null ? null : () {
-                      Get.dialog(Dialog(child: UserEditPage(selectedId.value!)))
-                          .then((_) {
-                        BlocProvider.of<UsersCubit>(context).refresh();
-                      });
-                    },
-                  )),
+                    onPressed: selectedId.value == null ? null : () async {
+                      final changed = await editUser(selectedId.value!);
+                      if (changed) BlocProvider.of<UsersCubit>(context).refresh();
+                    })),
               const SizedBox(width: 20),
               Obx(() =>
                   ElevatedButton(
@@ -48,19 +50,56 @@ class UsersLoadedPage extends StatelessWidget {
                       BlocProvider.of<UsersCubit>(context).delete(selectedId.value!);
                     },
                   )),
+              const SizedBox(width: 20),
+              ElevatedButton(
+                child: const Text("Refresh"),
+                onPressed: () {
+                  BlocProvider.of<UsersCubit>(context).refresh();
+                },
+              ),
+              const SizedBox(width: 20),
             ],
           ),
           const SizedBox(height: 20),
-          Obx(()=> HorizontalTable(
+          Obx((){
+            final _to_observe = selectedId.value;
+            return HorizontalTable(
+              width: 1400,
               columns: _columns,
               rows: users.map(
                       (e) => _row(e)
               ).toList(),
-            )
+            );
+          }
           ),
         ],
       ),
     );
+  }
+
+  Future<bool> editUser (int id) async{
+    try {
+      final data = await _loadData(id);
+      final got = await Get.dialog<UserData>(Dialog(child: UserEditPage(data)));
+      if (got==null) return false;
+      await _saveData(got);
+      return true;
+    } on Exception catch(e) {
+      print("ERR: edit user: $e");
+      return false;
+    }
+  }
+  
+  Future<UserData> _loadData(int id) async{
+    final resp = await http.fetch("/users/$id");
+    if (resp.statusCode != 200) throw Exception("HTTP CODE ${resp.statusCode}");
+    final json = jsonDecode(resp.body);
+    return UserData.fromJson(json);
+  }
+
+  Future<void> _saveData(UserData data) async{
+    final resp = await http.post("/users/${data.id}", body: data.patch());
+    if (resp.statusCode != 200) throw Exception("HTTP CODE ${resp.statusCode}");
   }
 
   DataRow2 _row(UserData data) =>
@@ -80,23 +119,33 @@ class UsersLoadedPage extends StatelessWidget {
     return [
       DataCell(Text("${data.id}")),
       DataCell(Text(data.name)),
+      DataCell(Text("${data.room}")),
       DataCell(Text("${data.curAP}")),
       DataCell(Text("${data.maxAP}")),
       DataCell(Text("${data.wounds}")),
-      DataCell(Text("${data.stim}")),
-      DataCell(Text("${data.waste}")),
-      DataCell(Text("${data.prof}")),
+      DataCell(Text(shortFloat.format(data.stim))),
+      DataCell(Text(shortFloat.format(data.waste))),
+      DataCell(Text("${data.tactic}")),
+      DataCell(Text("${data.engineer}")),
+      DataCell(Text("${data.operative}")),
+      DataCell(Text("${data.navigator}")),
+      DataCell(Text("${data.science}")),
     ];
   }
 
   static const List<DataColumn2> _columns = [
     DataColumn2(label: Text("id"), size: ColumnSize.S, numeric: true),
     DataColumn2(label: Text("name"), size: ColumnSize.L),
+    DataColumn2(label: Text("room"), numeric: true),
     DataColumn2(label: Text("cur AP"), numeric: true),
     DataColumn2(label: Text("max AP"), numeric: true),
     DataColumn2(label: Text("wounds"), numeric: true),
     DataColumn2(label: Text("stim"), numeric: true),
     DataColumn2(label: Text("waste"), numeric: true),
-    DataColumn2(label: Text("prof"), size: ColumnSize.L),
+    DataColumn2(label: Text("tactic"), numeric: true),
+    DataColumn2(label: Text("engineer"), numeric: true),
+    DataColumn2(label: Text("operative"), numeric: true),
+    DataColumn2(label: Text("navigator"), numeric: true),
+    DataColumn2(label: Text("science"), numeric: true),
   ];
 }

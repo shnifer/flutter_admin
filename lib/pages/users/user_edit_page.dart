@@ -1,57 +1,36 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_admin/connectors/http_controller.dart';
 import 'package:flutter_admin/models/users.dart';
 import 'package:get/get.dart';
 
 class UserEditPage extends StatelessWidget {
-  final int id;
-  const UserEditPage(this.id, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => UserEditCubit(id)..load(),
-      child: BlocBuilder<UserEditCubit, UserEditState>(
-        builder: (context, state) {
-          switch (state.success) {
-            case null:
-              return const CircularProgressIndicator();
-            case false:
-              return Text("ERROR! ${state.err}",
-                style: const TextStyle(color: Colors.red),
-              );
-            case true:
-              return _UserEditPage(state.data!);
-          }
-          return Container();
-        },
-      ),
-    );
-  }
-}
-
-class _UserEditPage extends StatelessWidget {
   final UserData data;
   final name = TextEditingController();
+  final room = TextEditingController();
   final curAP = TextEditingController();
   final maxAP = TextEditingController();
   final wounds = TextEditingController();
   final stim = TextEditingController();
   final waste = TextEditingController();
-  final prof = TextEditingController();
+  final tactic = TextEditingController();
+  final engineer = TextEditingController();
+  final operative = TextEditingController();
+  final navigator = TextEditingController();
+  final science = TextEditingController();
 
-  _UserEditPage(this.data, {Key? key}) : super(key: key) {
+  UserEditPage(this.data, {Key? key}) : super(key: key) {
     name.text = data.name;
+    room.text = data.room.toString();
     curAP.text = data.curAP.toString();
     maxAP.text = data.maxAP.toString();
     wounds.text = data.wounds.toString();
     stim.text = data.stim.toString();
     waste.text = data.waste.toString();
-    prof.text = jsonEncode(data.prof);
+    tactic.text = data.tactic.toString();
+    engineer.text = data.engineer.toString();
+    operative.text = data.operative.toString();
+    navigator.text = data.navigator.toString();
+    science.text = data.science.toString();
   }
 
   @override
@@ -64,29 +43,35 @@ class _UserEditPage extends StatelessWidget {
           children:[
             Text("ID: ${data.id}"),
             const SizedBox(height: 20),
-            _fieldRaw("Name:", name),
+            _fieldRaw("Name:", name, isDigit: false),
             const SizedBox(height: 5),
-            _fieldRaw("Cur AP:", curAP, isDigit: true),
+            _fieldRaw("Room:", room),
             const SizedBox(height: 5),
-            _fieldRaw("Max AP:", maxAP, isDigit: true),
+            _fieldRaw("Cur AP:", curAP),
             const SizedBox(height: 5),
-            _fieldRaw("Wounds:", wounds, isDigit: true),
+            _fieldRaw("Max AP:", maxAP),
             const SizedBox(height: 5),
-            _fieldRaw("Stim:", stim, isDigit: true),
+            _fieldRaw("Wounds:", wounds),
             const SizedBox(height: 5),
-            _fieldRaw("Waste:", waste, isDigit: true),
+            _fieldRaw("Stim:", stim),
             const SizedBox(height: 5),
-            _fieldRaw("Prof:", prof),
+            _fieldRaw("Waste:", waste),
+            const SizedBox(height: 5),
+            _fieldRaw("Tactic:", tactic),
+            const SizedBox(height: 5),
+            _fieldRaw("Engineer:", engineer),
+            const SizedBox(height: 5),
+            _fieldRaw("Operative:", operative),
+            const SizedBox(height: 5),
+            _fieldRaw("Navigator:", navigator),
+            const SizedBox(height: 5),
+            _fieldRaw("Science:", science),
             const SizedBox(height: 20),
             ElevatedButton(
-              child: const Text("Save"),
-              onPressed: () async{
-                final newData = composeData();
-                if (newData!=null){
-                  final ok = await BlocProvider.of<UserEditCubit>(context).save(newData);
-                  if (ok) Get.back();
+                child: const Text("Save"),
+                onPressed: () {
+                  Get.back(result: composeData());
                 }
-              },
             )
           ],
         ),
@@ -96,23 +81,28 @@ class _UserEditPage extends StatelessWidget {
 
   UserData? composeData(){
     try{
-      final List profs = jsonDecode(prof.text);
       return UserData(
-          data.id,
-          name.text,
-          int.parse(curAP.text),
-          int.parse(maxAP.text),
-          int.parse(wounds.text),
-          int.parse(stim.text),
-          int.parse(waste.text),
-          profs.cast());
+        id: data.id,
+        name: name.text,
+        room: int.parse(room.text),
+        curAP: int.parse(curAP.text),
+        maxAP: int.parse(maxAP.text),
+        wounds: int.parse(wounds.text),
+        stim: double.parse(stim.text),
+        waste: double.parse(waste.text),
+        tactic: int.parse(tactic.text),
+        engineer: int.parse(engineer.text),
+        operative: int.parse(operative.text),
+        navigator: int.parse(navigator.text),
+        science: int.parse(science.text),
+      );
     } on Exception catch (e){
       Get.showSnackbar(GetBar(message: e.toString()));
       return null;
     }
   }
 
-  Widget _fieldRaw(String prefix, TextEditingController controller, {isDigit = false}) {
+  Widget _fieldRaw(String prefix, TextEditingController controller, {isDigit = true}) {
     return Row(
         children: [
           SizedBox(
@@ -137,50 +127,4 @@ class _UserEditPage extends StatelessWidget {
         ]
     );
   }
-}
-
-
-
-class UserEditCubit extends Cubit<UserEditState>{
-  UserEditCubit(this.id) : super (UserEditState());
-
-  final int id;
-  final HttpConnectController http = Get.find();
-
-  Future<void> load() async{
-    try {
-      final resp = await http.fetch("/users/$id");
-      if (resp.statusCode != 200) throw Exception("HTTP CODE ${resp.statusCode}");
-      final json = jsonDecode(resp.body);
-      final data = UserData.fromJson(json);
-      emit(UserEditState(success: true, data: data));
-    } on Exception catch (e){
-      emit(UserEditState(success: false, err: e));
-    }
-  }
-
-  Future<bool> save(UserData data) async{
-    try {
-      final resp = await http.post("/users/$id", body: <String, String>{
-        "name": data.name,
-        "cur_ap": data.curAP.toString(),
-        "max_ap": data.maxAP.toString(),
-        "wounds": data.wounds.toString(),
-        "stim": data.stim.toString(),
-        "waste": data.waste.toString(),
-        "prof": jsonEncode(data.prof),
-      });
-      if (resp.statusCode != 200) throw Exception("HTTP CODE ${resp.statusCode}");
-      return true;
-    } on Exception{
-      return false;
-    }
-  }
-}
-
-class UserEditState{
-  final bool? success;
-  final UserData? data;
-  final Exception? err;
-  UserEditState({this.success, this.data, this.err});
 }

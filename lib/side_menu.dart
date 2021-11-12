@@ -39,6 +39,7 @@ class SideMenuItem extends StatelessWidget {
         ),
         onPressed: (){
           c.curPage.value = page;
+          Get.back();
         },
       ),
     );

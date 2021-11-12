@@ -12,14 +12,17 @@ class UsersCubit extends Cubit<UsersState>{
 
   Future<void> refresh () async{
     if (state.isLoading) {
-      print("refresh already loading skipped");
       return;
     }
-    emit(UsersState.loading());
+    var stillLoading = true;
+    Future.delayed(const Duration(milliseconds: 300)).
+       then((_) {if (stillLoading) emit(UsersState.loading());});
     try {
       final data = await _download();
+      stillLoading = false;
       emit(UsersState.ready(data));
     } on Exception catch (e){
+      stillLoading = false;
       emit(UsersState.failed(e));
     }
   }
