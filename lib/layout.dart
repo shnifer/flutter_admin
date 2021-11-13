@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_admin/pages/options/options_page.dart';
 import 'package:flutter_admin/pages/rooms/rooms_page.dart';
+import 'package:flutter_admin/pages/targets/targets_page.dart';
 import 'package:flutter_admin/pages/users/users_page.dart';
 import 'package:flutter_admin/side_menu.dart';
 import 'package:get/get.dart';
 
-enum MenuPage { options, users, rooms }
+enum MenuPage { options, users, rooms, targets }
 
 class MenuController extends GetxController {
   var curPage = MenuPage.options.obs;
@@ -37,6 +38,8 @@ class Layout extends StatelessWidget {
                 return const UsersPage();
               case MenuPage.rooms:
                 return const RoomsPage();
+              case MenuPage.targets:
+                return const TargetsPage();
             }
           }),
         ),

@@ -71,14 +71,12 @@ class RoomsLoadedPage extends StatelessWidget {
 
   Future<RoomData> _loadData(int id) async{
     final resp = await http.fetch("/rooms/$id");
-    if (resp.statusCode != 200) throw Exception("HTTP CODE ${resp.statusCode}");
     final json = jsonDecode(resp.body);
     return RoomData.fromJson(json);
   }
 
   Future<void> _saveData(RoomData data) async{
-    final resp = await http.post("/rooms/${data.id}", body: data.patch());
-    if (resp.statusCode != 200) throw Exception("HTTP CODE ${resp.statusCode}");
+    await http.post("/rooms/${data.id}", body: data.patch());
   }
 
   DataRow2 _row(RoomData data) => DataRow2(

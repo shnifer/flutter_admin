@@ -58,28 +58,34 @@ class HttpConnectController extends GetxController{
   }
 
   //move access method to repo???
-  Future<http.Response> fetch(String path) {
-      return http.get(Uri.http(address.value, path)).
+  Future<http.Response> fetch(String path) async{
+      final resp = await http.get(Uri.http(address.value, path)).
       timeout(
         const Duration(seconds: 1),
         onTimeout: () => http.Response('Timeout', 500),
       );
+      if (resp.statusCode != 200) throw Exception("GET ${address.value}$path returned code ${resp.statusCode}");
+      return resp;
   }
 
-  Future<http.Response> post(String path, {Object? body}) {
-    return http.post(Uri.http(address.value, path), body: body).
+  Future<http.Response> post(String path, {Object? body}) async{
+    final resp = await http.post(Uri.http(address.value, path), body: body).
     timeout(
       const Duration(seconds: 1),
       onTimeout: () => http.Response('Timeout', 500),
     );
+    if (resp.statusCode != 200) throw Exception("POST ${address.value}$path returned code ${resp.statusCode}");
+    return resp;
   }
 
-  Future<http.Response> delete(String path, {Object? body}) {
-    return http.delete(Uri.http(address.value, path), body: body).
+  Future<http.Response> delete(String path, {Object? body}) async{
+    final resp = await http.delete(Uri.http(address.value, path), body: body).
     timeout(
       const Duration(seconds: 1),
       onTimeout: () => http.Response('Timeout', 500),
     );
+    if (resp.statusCode != 200) throw Exception("DELETE ${address.value}$path returned code ${resp.statusCode}");
+    return resp;
   }
 }
 

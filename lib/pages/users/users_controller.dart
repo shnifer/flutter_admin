@@ -29,8 +29,7 @@ class UsersCubit extends Cubit<UsersState>{
 
   Future<void> addDef() async{
     try {
-      final resp = await http.post("/users");
-      if (resp.statusCode != 200) throw Exception("HTTP CODE ${resp.statusCode}");
+      await http.post("/users");
       refresh();
     } on Exception catch (e){
       emit(UsersState.failed(e));
@@ -39,8 +38,7 @@ class UsersCubit extends Cubit<UsersState>{
 
   Future<void> delete(int id) async{
     try {
-      final resp = await http.delete("/users/$id");
-      if (resp.statusCode != 200) throw Exception("HTTP CODE ${resp.statusCode}");
+      await http.delete("/users/$id");
       refresh();
     } on Exception catch (e){
       emit(UsersState.failed(e));
@@ -49,7 +47,6 @@ class UsersCubit extends Cubit<UsersState>{
 
   Future<List<UserData>> _download() async{
     final resp = await http.fetch("/users");
-    if (resp.statusCode != 200) throw Exception("HTTP CODE ${resp.statusCode}");
     final json = jsonDecode(resp.body);
     return json['items'].map<UserData>(
       (itemJson) => UserData.fromJson(itemJson)

@@ -29,7 +29,6 @@ class RoomsCubit extends Cubit<RoomsState>{
 
   Future<List<RoomData>> _download() async{
     final resp = await http.fetch("/rooms");
-    if (resp.statusCode != 200) throw Exception("HTTP CODE ${resp.statusCode}");
     final json = jsonDecode(resp.body);
     return json['items'].map<RoomData>(
       (itemJson) => RoomData.fromJson(itemJson)

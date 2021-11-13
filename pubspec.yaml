@@ -33,6 +33,8 @@ dependencies:
   equatable: ^2.0.0
   shared_preferences: ^2.0.8
   intl: ^0.17.0
+  arrow_path: ^2.0.0
+  touchable: ^1.0.0
   flutter:
     sdk: flutter
 

@@ -60,8 +60,9 @@ class ServerStatMonitor extends StatelessWidget {
                 const SizedBox(height: 10),
                 ElevatedButton(
                   child: const SizedBox(width: 100, child: Center(child: Text("start"))),
-                  onPressed: (){
-                    c.post("/debug/start");
+                  onPressed: () async{
+                    await c.post("/debug/start");
+                    c.refreshOnline();
                   },
                 ),
                 const SizedBox(height: 10),
@@ -69,16 +70,18 @@ class ServerStatMonitor extends StatelessWidget {
                   final way = c.stat.paused.value ? "resume" : "pause";
                   return ElevatedButton(
                     child: SizedBox(width: 100, child: Center(child: Text(way))),
-                    onPressed: (){
-                      c.post("/debug/$way");
+                    onPressed: () async{
+                      await c.post("/debug/$way");
+                      c.refreshOnline();
                     },
                   );
                 }),
                 const SizedBox(height: 10),
                 ElevatedButton(
                   child: const SizedBox(width: 100, child: Center(child: Text("reset", style: TextStyle(color: Colors.red)))),
-                  onPressed: (){
-                    c.post("/debug/reset");
+                  onPressed: () async{
+                    await c.post("/debug/reset");
+                    c.refreshOnline();
                   },
                 ),
               ],
