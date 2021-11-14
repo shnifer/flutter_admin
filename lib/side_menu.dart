@@ -16,6 +16,7 @@ class SideMenu extends StatelessWidget{
         SideMenuItem(text: "Users", page: MenuPage.users),
         SideMenuItem(text: "Rooms", page: MenuPage.rooms),
         SideMenuItem(text: "Targets", page: MenuPage.targets),
+        SideMenuItem(text: "Ship", page: MenuPage.ship),
       ],
     );
   }
