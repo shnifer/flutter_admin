@@ -40,6 +40,7 @@ class HttpConnectController extends GetxController{
       stat.ticking.value = json['world']['is_ticking'];
       stat.paused.value = json['world']['paused'];
       stat.stage.value = json['world']['stage'];
+      stat.cron.value = json['cron'];
     } catch (e) {
       print("ERROR refreshOnline: $e");
       stat.online.value = false;
@@ -95,4 +96,5 @@ class ServerStat{
   var ticking = false.obs;
   var paused = false.obs;
   var stage = "".obs;
+  var cron = "".obs;
 }

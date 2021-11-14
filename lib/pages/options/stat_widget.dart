@@ -24,6 +24,10 @@ class ServerStatMonitor extends StatelessWidget {
                     "Last seen ${c.stat.online.value ? "ONLINE" : "OFFLINE"}"
                 )),
                 const SizedBox(height: 20),
+                Obx(()=>Text(
+                    "Cron: ${c.stat.cron.value}"
+                )),
+                const SizedBox(height: 20),
                 Obx(()=>Text("Игровое время ${c.stat.gtime.value.toStringAsFixed(2)} sec")),
                 const SizedBox(height: 20),
                 Obx(()=>c.stat.ticking.value ? const Text("Тикает") : const Text("Не тикает")),
@@ -81,6 +85,14 @@ class ServerStatMonitor extends StatelessWidget {
                   child: const SizedBox(width: 100, child: Center(child: Text("reset", style: TextStyle(color: Colors.red)))),
                   onPressed: () async{
                     await c.post("/debug/reset");
+                    c.refreshOnline();
+                  },
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  child: const SizedBox(width: 100, child: Center(child: Text("HARD reset", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)))),
+                  onPressed: () async{
+                    await c.post("/debug/hardreset");
                     c.refreshOnline();
                   },
                 ),
