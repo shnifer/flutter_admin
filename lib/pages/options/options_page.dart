@@ -4,11 +4,11 @@ import 'package:flutter_admin/pages/options/stat_widget.dart';
 import 'package:get/get.dart';
 
 class OptionsPage extends StatelessWidget {
-  const OptionsPage({Key? key}) : super(key: key);
+  OptionsPage({Key? key}) : super(key: key);
+  final HttpConnectController c = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    final HttpConnectController c = Get.find();
     final addrController = TextEditingController();
 
     return SingleChildScrollView(
@@ -43,18 +43,20 @@ class OptionsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                    onPressed: c.address.value == "xiiith.ru" ? null : () {
-                      c.setAddress("xiiith.ru");
-                    },
-                    child: const Text("set REMOTE")
-                ),
+                    onPressed: c.address.value == "xiiith.ru"
+                        ? null
+                        : () {
+                            c.setAddress("xiiith.ru");
+                          },
+                    child: const Text("set REMOTE")),
                 const SizedBox(width: 20),
                 ElevatedButton(
-                    onPressed: c.address.value == "127.0.0.1" ? null : () {
-                      c.setAddress("127.0.0.1");
-                    },
-                    child: const Text("set LOCAL")
-                ),
+                    onPressed: c.address.value == "127.0.0.1"
+                        ? null
+                        : () {
+                            c.setAddress("127.0.0.1");
+                          },
+                    child: const Text("set LOCAL")),
               ],
             );
           }),

@@ -34,7 +34,7 @@ class Layout extends StatelessWidget {
           child: Obx(() {
             switch (c.curPage.value) {
               case MenuPage.options:
-                return const OptionsPage();
+                return OptionsPage();
               case MenuPage.users:
                 return const UsersPage();
               case MenuPage.rooms:
