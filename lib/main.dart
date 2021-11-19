@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_admin/canvas/images_controller.dart';
 import 'package:flutter_admin/connectors/http_controller.dart';
 import 'package:flutter_admin/side_menu.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(HttpConnectController()..initLocalSettings());
     Get.put(MenuController());
+    Get.put(ImagesController()..loadImages());
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,

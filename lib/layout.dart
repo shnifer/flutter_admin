@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_admin/canvas/canvas_page.dart';
 import 'package:flutter_admin/pages/options/options_page.dart';
 import 'package:flutter_admin/pages/rooms/rooms_page.dart';
 import 'package:flutter_admin/pages/ship/ship_page.dart';
@@ -7,10 +8,10 @@ import 'package:flutter_admin/pages/users/users_page.dart';
 import 'package:flutter_admin/side_menu.dart';
 import 'package:get/get.dart';
 
-enum MenuPage { options, users, rooms, targets, ship }
+enum MenuPage { options, users, rooms, targets, ship, canvas}
 
 class MenuController extends GetxController {
-  var curPage = MenuPage.options.obs;
+  var curPage = MenuPage.canvas.obs;
 }
 
 class Layout extends StatelessWidget {
@@ -43,6 +44,8 @@ class Layout extends StatelessWidget {
                 return const TargetsPage();
               case MenuPage.ship:
                 return const ShipPage();
+              case MenuPage.canvas:
+                return CanvasPage();
             }
           }),
         ),
