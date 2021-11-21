@@ -11,6 +11,7 @@ class DecodeParam {
 
 class ImagesController extends GetxController {
   Map<String, Image> images = {};
+  var scale = 1.0;
   final names = <String>["ship.png", "planet_ani.png"];
 
   loadImages() async{
